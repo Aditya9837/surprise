@@ -63,8 +63,8 @@ export function TypingAnimation({
             key={i}
             className={`font-[family-name:var(--font-display)] leading-tight tracking-wide ${
               isLast
-                ? 'text-5xl sm:text-6xl md:text-8xl font-semibold shimmer-text'
-                : 'text-2xl sm:text-3xl md:text-4xl text-white/80 font-light italic'
+                ? 'text-lg sm:text-2xl md:text-4xl text-pearl/75 font-light italic'
+                : 'text-base sm:text-xl md:text-3xl text-pearl/55 font-light italic'
             }`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -73,7 +73,7 @@ export function TypingAnimation({
             {text}
             {isActive && (
               <motion.span
-                className="inline-block w-[3px] h-[0.85em] bg-pink-400 ml-1 align-middle rounded-full"
+                className="inline-block w-[3px] h-[0.85em] bg-blush ml-1 align-middle rounded-full"
                 animate={{ opacity: [1, 0] }}
                 transition={{ duration: 0.6, repeat: Infinity }}
               />

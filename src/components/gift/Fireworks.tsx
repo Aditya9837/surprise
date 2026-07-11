@@ -13,7 +13,7 @@ interface Firework {
   }[]
 }
 
-const FW_COLORS = ['#f472b6', '#c084fc', '#fbbf24', '#fda4af', '#e879f9', '#fff']
+const FW_COLORS = ['#f2b8c6', '#e89aab', '#d4b56a', '#e8d5a8', '#f7e8e0', '#fff']
 
 export function Fireworks({ active }: { active: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -58,7 +58,7 @@ export function Fireworks({ active }: { active: boolean }) {
 
     let animationId = 0
     const animate = () => {
-      ctx.fillStyle = 'rgba(5, 5, 16, 0.15)'
+      ctx.fillStyle = 'rgba(10, 6, 8, 0.04)'
       ctx.fillRect(0, 0, canvas.width, canvas.height)
 
       spawnRef.current++
@@ -104,7 +104,7 @@ export function Fireworks({ active }: { active: boolean }) {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[7999]"
+      className="fixed inset-0 pointer-events-none z-[2]"
       aria-hidden="true"
     />
   )

@@ -1,28 +1,33 @@
 import { GlowingBlobs } from '../components/effects/GlowingBlobs'
 import { GiftBox } from '../components/gift/GiftBox'
 import { SectionItem, SectionWrapper } from '../components/layout/SectionWrapper'
-import { SECTIONS } from '../constants/content'
+import { useWeekContent } from '../context/WeekContext'
 
 export default function GiftSection() {
+  const { sections } = useWeekContent()
+
   return (
-    <SectionWrapper id="gift">
+    <SectionWrapper
+      id="gift"
+      className="romantic-veil !overflow-y-auto !overflow-x-hidden !items-start !min-h-[100dvh] py-20 sm:py-24"
+    >
       <GlowingBlobs />
 
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at center bottom, rgba(124, 58, 237, 0.12) 0%, transparent 60%)',
+            'radial-gradient(ellipse at center bottom, rgba(196, 92, 116, 0.2) 0%, transparent 55%)',
         }}
       />
 
-      <div className="relative z-10 w-full px-6 py-16">
-        <SectionItem className="text-center mb-12">
-          <p className="text-xs tracking-[0.4em] uppercase text-gold/60 mb-4">
-            {SECTIONS.gift.chapter}
+      <div className="relative z-20 w-full px-5 sm:px-6 pb-32">
+        <SectionItem className="text-center mb-10">
+          <p className="text-[11px] tracking-[0.4em] uppercase text-champagne/55 mb-4">
+            {sections.gift.chapter}
           </p>
           <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-6xl font-light text-gradient-gold">
-            {SECTIONS.gift.title}
+            {sections.gift.title}
           </h2>
         </SectionItem>
 

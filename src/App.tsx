@@ -1,65 +1,50 @@
+import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
-import { HeartCursor } from './components/effects/HeartCursor'
-import { MouseSparkleTrail } from './components/effects/MouseSparkleTrail'
-import { MusicPlayer } from './components/music/MusicPlayer'
+import { getLatestWeekId, getWeekMeta } from './weeks/registry'
+import { WeekExperience } from './weeks/WeekExperience'
+import { ScrollToTop } from './components/layout/ScrollToTop'
 
-const LandingSection = lazy(() => import('./sections/LandingSection'))
-const PetalsSection = lazy(() => import('./sections/PetalsSection'))
-const HeartsSection = lazy(() => import('./sections/HeartsSection'))
-const PolaroidSection = lazy(() => import('./sections/PolaroidSection'))
-const StarsSection = lazy(() => import('./sections/StarsSection'))
-const MusicSection = lazy(() => import('./sections/MusicSection'))
-const MessageSection = lazy(() => import('./sections/MessageSection'))
-const GiftSection = lazy(() => import('./sections/GiftSection'))
+const MemoriesArchive = lazy(() => import('./pages/MemoriesArchive'))
 
-function SectionLoader() {
+function Loader() {
   return (
-    <div className="section-full flex items-center justify-center">
-      <div className="w-10 h-10 border-2 border-pink-400/20 border-t-pink-400 rounded-full animate-spin" />
+    <div className="section-full flex items-center justify-center romantic-veil">
+      <div className="w-10 h-10 border-2 border-blush/20 border-t-blush rounded-full animate-spin" />
     </div>
   )
 }
 
+function WeekRoute({ weekId }: { weekId: number }) {
+  if (!getWeekMeta(weekId)) {
+    return <Navigate to="/memories" replace />
+  }
+  // key forces a full remount so each week starts fresh (gate + music + scroll)
+  return <WeekExperience key={weekId} weekId={weekId} />
+}
+
+function WeekByParam() {
+  const { weekId } = useParams()
+  const id = Number(weekId)
+  if (!Number.isFinite(id) || id < 1) {
+    return <Navigate to="/memories" replace />
+  }
+  return <WeekRoute weekId={id} />
+}
+
 export default function App() {
+  const latest = getLatestWeekId()
+
   return (
     <>
-      <HeartCursor />
-      <MouseSparkleTrail />
-      <MusicPlayer />
-
-      <main>
-        <Suspense fallback={<SectionLoader />}>
-          <LandingSection />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <PetalsSection />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <HeartsSection />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <PolaroidSection />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <StarsSection />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <MusicSection />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <MessageSection />
-        </Suspense>
-
-        <Suspense fallback={<SectionLoader />}>
-          <GiftSection />
-        </Suspense>
-      </main>
+      <ScrollToTop />
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<WeekRoute weekId={latest} />} />
+          <Route path="/memories" element={<MemoriesArchive />} />
+          <Route path="/week/:weekId" element={<WeekByParam />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </>
   )
 }

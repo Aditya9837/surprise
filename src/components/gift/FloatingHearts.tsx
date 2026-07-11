@@ -15,7 +15,7 @@ export function FloatingHearts({ active }: { active: boolean }) {
   }))
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-[7998] overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 pointer-events-none z-[2] overflow-hidden" aria-hidden="true">
       {hearts.map((h) => (
         <motion.div
           key={h.id}

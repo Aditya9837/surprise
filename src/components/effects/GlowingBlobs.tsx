@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 
 const BLOBS = [
-  { color: 'rgba(124, 58, 237, 0.25)', size: '40vw', x: '-10%', y: '10%', duration: 25 },
-  { color: 'rgba(236, 72, 153, 0.2)', size: '35vw', x: '60%', y: '50%', duration: 30 },
-  { color: 'rgba(59, 130, 246, 0.15)', size: '30vw', x: '30%', y: '-10%', duration: 22 },
-  { color: 'rgba(251, 191, 36, 0.1)', size: '25vw', x: '70%', y: '70%', duration: 28 },
+  { color: 'rgba(196, 92, 116, 0.28)', size: '40vw', x: '-10%', y: '10%', duration: 25 },
+  { color: 'rgba(242, 184, 198, 0.2)', size: '35vw', x: '60%', y: '50%', duration: 30 },
+  { color: 'rgba(212, 181, 106, 0.14)', size: '30vw', x: '30%', y: '-10%', duration: 22 },
+  { color: 'rgba(232, 154, 171, 0.12)', size: '25vw', x: '70%', y: '70%', duration: 28 },
 ]
 
 export function GlowingBlobs() {

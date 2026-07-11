@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import { POLAROIDS } from '../../constants/content'
 import { useIsMobile } from '../../hooks/useIsMobile'
+import { useWeekContent } from '../../context/WeekContext'
 
 function createPolaroidTexture(caption: string, emoji: string, hue: number): THREE.CanvasTexture {
   const canvas = document.createElement('canvas')
@@ -36,6 +36,7 @@ function createPolaroidTexture(caption: string, emoji: string, hue: number): THR
 export function PolaroidScene() {
   const mountRef = useRef<HTMLDivElement>(null)
   const isMobile = useIsMobile()
+  const { polaroids } = useWeekContent()
 
   useEffect(() => {
     const mount = mountRef.current
@@ -75,7 +76,7 @@ export function PolaroidScene() {
           [2.2, 0.3, 0],
         ]
 
-    POLAROIDS.slice(0, positions.length).forEach((polaroid, i) => {
+    polaroids.slice(0, positions.length).forEach((polaroid, i) => {
       const texture = createPolaroidTexture(polaroid.caption, polaroid.emoji, hues[i])
       const geometry = new THREE.BoxGeometry(2.2, 2.8, 0.06)
       const materials = [
@@ -151,7 +152,7 @@ export function PolaroidScene() {
         }
       })
     }
-  }, [isMobile])
+  }, [isMobile, polaroids])
 
   return (
     <div

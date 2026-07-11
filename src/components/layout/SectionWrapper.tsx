@@ -34,7 +34,7 @@ export function SectionWrapper({ id, children, className = '', dark = true }: Se
     <motion.section
       ref={ref}
       id={id}
-      className={`section-full ${dark ? 'bg-[#050510]' : ''} ${className}`}
+      className={`section-full ${dark ? 'bg-[var(--color-ink)]' : ''} ${className}`}
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
       variants={containerVariants}

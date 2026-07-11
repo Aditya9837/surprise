@@ -1,10 +1,10 @@
 import { GlowingBlobs } from '../components/effects/GlowingBlobs'
 import { SectionItem, SectionWrapper } from '../components/layout/SectionWrapper'
-import { GlassCard } from '../components/ui/GlassCard'
-import { HANDWRITTEN_MESSAGE, SECTIONS } from '../constants/content'
+import { useWeekContent } from '../context/WeekContext'
 
 export default function MessageSection() {
-  const lines = HANDWRITTEN_MESSAGE.split('\n')
+  const { handwrittenMessage, sections } = useWeekContent()
+  const lines = handwrittenMessage.split('\n')
 
   return (
     <SectionWrapper id="message">
@@ -14,23 +14,28 @@ export default function MessageSection() {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.06) 0%, transparent 60%)',
+            'radial-gradient(ellipse at 50% 50%, rgba(196, 92, 116, 0.1) 0%, transparent 60%)',
         }}
       />
 
       <div className="relative z-10 w-full max-w-2xl mx-auto px-6 py-12">
         <SectionItem>
-          <p className="text-xs tracking-[0.4em] uppercase text-pink-300/60 mb-8 text-center">
-            {SECTIONS.message.chapter}
+          <p className="text-[11px] tracking-[0.4em] uppercase text-blush/50 mb-3 text-center">
+            {sections.message.chapter}
           </p>
+          {sections.message.title && (
+            <h2 className="font-[family-name:var(--font-display)] text-3xl md:text-4xl text-center text-gradient mb-10">
+              {sections.message.title}
+            </h2>
+          )}
         </SectionItem>
 
         <SectionItem>
-          <GlassCard strong className="p-8 md:p-12 premium-shadow relative overflow-hidden">
+          <div className="glass-strong rounded-3xl p-8 md:p-12 premium-shadow relative overflow-hidden">
             <div
-              className="absolute top-0 right-0 w-32 h-32 opacity-20"
+              className="absolute top-0 right-0 w-40 h-40 opacity-30"
               style={{
-                background: 'radial-gradient(circle, rgba(251, 191, 36, 0.4) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(232, 213, 168, 0.5) 0%, transparent 70%)',
               }}
             />
 
@@ -40,10 +45,10 @@ export default function MessageSection() {
                   key={i}
                   className={`font-[family-name:var(--font-handwritten)] leading-relaxed ${
                     i === 0
-                      ? 'text-3xl md:text-4xl text-pink-200 mb-6'
+                      ? 'text-3xl md:text-4xl text-blush mb-6'
                       : line.trim() === ''
                         ? 'h-4'
-                        : 'text-xl md:text-2xl text-white/75'
+                        : 'text-xl md:text-2xl text-pearl/75'
                   }`}
                 >
                   {line}
@@ -52,10 +57,10 @@ export default function MessageSection() {
             </div>
 
             <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-end gap-3">
-              <div className="w-16 h-px bg-gradient-to-r from-transparent to-pink-400/50" />
-              <span className="text-pink-300/50 text-lg">♥</span>
+              <div className="w-16 h-px bg-gradient-to-r from-transparent to-blush/50" />
+              <span className="text-blush/60 text-lg">♥</span>
             </div>
-          </GlassCard>
+          </div>
         </SectionItem>
       </div>
     </SectionWrapper>
