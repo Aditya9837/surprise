@@ -16,7 +16,12 @@ export default function LandingSection() {
   const content = useWeekContent()
 
   const scrollToNext = () => {
-    document.getElementById('petals')?.scrollIntoView({ behavior: 'smooth' })
+    const nextId = content.darkRomance
+      ? 'midnight-confession'
+      : content.journeyLayout === 'still'
+        ? 'seven-days'
+        : 'petals'
+    document.getElementById(nextId)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (

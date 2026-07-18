@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { GlowingBlobs } from '../components/effects/GlowingBlobs'
 import { FloatingParticles } from '../components/effects/FloatingParticles'
 import { PhotoGallery } from '../components/photos/PhotoGallery'
+import { PhotoFilmStrip } from '../components/photos/PhotoFilmStrip'
 import { PolaroidScene } from '../components/three/PolaroidScene'
 import { SectionItem, SectionWrapper } from '../components/layout/SectionWrapper'
 import { useWeekContent } from '../context/WeekContext'
@@ -36,7 +37,9 @@ export default function PolaroidSection() {
         </SectionItem>
 
         <SectionItem>
-          {galleryMode === 'photos' ? (
+          {galleryMode === 'filmstrip' ? (
+            <PhotoFilmStrip />
+          ) : galleryMode === 'photos' ? (
             <PhotoGallery />
           ) : (
             <Suspense

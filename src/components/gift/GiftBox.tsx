@@ -16,11 +16,154 @@ export function GiftBox() {
     return <ProposalFinale />
   }
 
+  if (content.finaleMode === 'envelope') {
+    return <EnvelopeFinale />
+  }
+
   return <MessageFinale />
 }
 
+function EnvelopeFinale() {
+  const { cta, finalMessage, herName } = useWeekContent()
+  const meta = useWeekMeta()
+  const [opened, setOpened] = useState(false)
+  const [showFX, setShowFX] = useState(false)
+
+  useEffect(() => {
+    if (!opened) return
+    setShowFX(true)
+    const t = window.setTimeout(() => setShowFX(false), 2800)
+    return () => clearTimeout(t)
+  }, [opened])
+
+  return (
+    <div className="relative flex flex-col items-center w-full px-4" style={{ zIndex: 30 }}>
+      <ConfettiBurst active={showFX} />
+      <FloatingHearts active={showFX} />
+
+      <AnimatePresence mode="wait">
+        {!opened ? (
+          <motion.button
+            key="envelope"
+            type="button"
+            onClick={() => setOpened(true)}
+            className="relative group"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            whileHover={{ y: -6 }}
+            whileTap={{ scale: 0.98 }}
+            aria-label="Open the letter"
+          >
+            <motion.div
+              className="absolute -inset-8 rounded-full blur-3xl"
+              style={{ background: 'rgba(232,213,168,0.25)' }}
+              animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.1, 1] }}
+              transition={{ duration: 2.4, repeat: Infinity }}
+            />
+
+            <div className="relative w-64 sm:w-72 h-44 sm:h-48">
+              <div
+                className="absolute inset-0 rounded-md border border-white/15 shadow-2xl overflow-hidden"
+                style={{
+                  background: 'linear-gradient(145deg, #3a242c, #1a1014)',
+                }}
+              >
+                <div
+                  className="absolute inset-x-0 top-0 h-1/2 origin-top"
+                  style={{
+                    background: 'linear-gradient(180deg, #4a3038, #2a1820)',
+                    clipPath: 'polygon(0 0, 50% 70%, 100% 0)',
+                  }}
+                />
+                <div className="absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full border-2 border-champagne/50 flex items-center justify-center bg-[#1a1014] shadow-[0_0_30px_rgba(232,213,168,0.35)]">
+                  <span className="font-[family-name:var(--font-script)] text-2xl text-champagne">
+                    M
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <motion.p
+              className="mt-10 text-sm tracking-[0.3em] uppercase text-pearl/50 group-hover:text-champagne transition-colors"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              {cta.gift}
+            </motion.p>
+            <p className="mt-2 text-[10px] tracking-[0.2em] uppercase text-pearl/25">
+              A sealed letter for you
+            </p>
+          </motion.button>
+        ) : (
+          <motion.div
+            key="letter"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-xl w-full relative"
+            style={{ zIndex: 40 }}
+          >
+            <div
+              className="rounded-sm p-8 sm:p-12 text-center relative"
+              style={{
+                background: 'linear-gradient(165deg, #f7efe6, #f0e0d4)',
+                boxShadow: '0 25px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.08)',
+              }}
+            >
+              <p className="text-[10px] tracking-[0.35em] uppercase text-[#8a5a66]/70 mb-4">
+                {meta.dateLabel}
+              </p>
+              <h2 className="font-[family-name:var(--font-script)] text-4xl sm:text-5xl text-[#5c3d45] mb-3">
+                {finalMessage.title}
+              </h2>
+              <p className="font-[family-name:var(--font-display)] text-base sm:text-lg text-[#7a5560] italic mb-8">
+                {finalMessage.subtitle}
+              </p>
+              <div className="space-y-3 mb-10">
+                {finalMessage.lines.map((line, i) => (
+                  <motion.p
+                    key={i}
+                    className="font-[family-name:var(--font-handwritten)] text-xl sm:text-2xl text-[#6b4550]"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 + i * 0.2 }}
+                  >
+                    {line}
+                  </motion.p>
+                ))}
+              </div>
+              <motion.button
+                type="button"
+                onClick={() =>
+                  downloadMemoryCard({
+                    herName,
+                    dateLabel: meta.dateLabel || 'Forever',
+                    title: finalMessage.title,
+                    subtitle: finalMessage.subtitle,
+                  })
+                }
+                className="inline-flex items-center justify-center min-h-12 px-8 py-3 rounded-full text-[11px] tracking-[0.22em] uppercase text-[#f7efe6] font-medium"
+                style={{ background: 'linear-gradient(135deg, #c45c74, #8a4a58)' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1 }}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Save this day ↓
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 function MessageFinale() {
-  const { cta, finalMessage } = useWeekContent()
+  const { cta, finalMessage, herName } = useWeekContent()
+  const meta = useWeekMeta()
   const [opened, setOpened] = useState(false)
   const [lidOpen, setLidOpen] = useState(false)
 
@@ -31,7 +174,7 @@ function MessageFinale() {
   }
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div className="relative flex flex-col items-center z-20">
       <ConfettiBurst active={opened} />
       <Fireworks active={opened} />
       <FloatingHearts active={opened} />
@@ -87,20 +230,20 @@ function MessageFinale() {
           initial={{ opacity: 0, scale: 0.8, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-20 max-w-2xl mx-auto px-6"
+          className="relative z-20 max-w-2xl mx-auto px-6 pb-16"
         >
-          <GlassCard strong className="p-10 md:p-14 text-center premium-shadow">
-            <h2 className="font-[family-name:var(--font-display)] text-4xl md:text-5xl font-semibold text-gradient mb-4">
+          <GlassCard strong className="p-8 sm:p-10 md:p-14 text-center premium-shadow">
+            <h2 className="font-[family-name:var(--font-display)] text-3xl sm:text-4xl md:text-5xl font-semibold text-gradient mb-4">
               {finalMessage.title}
             </h2>
-            <p className="font-[family-name:var(--font-display)] text-xl md:text-2xl text-pearl/70 italic mb-8">
+            <p className="font-[family-name:var(--font-display)] text-lg md:text-2xl text-pearl/70 italic mb-8">
               {finalMessage.subtitle}
             </p>
-            <div className="space-y-3">
+            <div className="space-y-3 mb-10">
               {finalMessage.lines.map((line, i) => (
                 <motion.p
                   key={i}
-                  className="font-[family-name:var(--font-handwritten)] text-2xl md:text-3xl text-blush/90"
+                  className="font-[family-name:var(--font-handwritten)] text-xl sm:text-2xl md:text-3xl text-blush/90"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 + i * 0.3 }}
@@ -109,6 +252,30 @@ function MessageFinale() {
                 </motion.p>
               ))}
             </div>
+
+            <motion.button
+              type="button"
+              onClick={() =>
+                downloadMemoryCard({
+                  herName,
+                  dateLabel: meta.dateLabel || 'Forever',
+                  title: finalMessage.title,
+                  subtitle: finalMessage.subtitle,
+                })
+              }
+              className="inline-flex items-center justify-center min-h-12 px-8 py-4 rounded-full text-xs tracking-[0.22em] uppercase text-ink font-medium"
+              style={{
+                background: 'linear-gradient(135deg, #f7e8e0, #f2b8c6 45%, #e8d5a8)',
+                boxShadow: '0 0 40px rgba(242,184,198,0.5)',
+              }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.8 }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Save this day ↓
+            </motion.button>
           </GlassCard>
         </motion.div>
       )}

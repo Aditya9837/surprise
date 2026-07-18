@@ -8,10 +8,15 @@ import { WeekChrome } from '../components/layout/WeekChrome'
 import { WeekProvider, useWeekContent, useWeekMeta } from '../context/WeekContext'
 
 const LandingSection = lazy(() => import('../sections/LandingSection'))
+const MidnightConfessionSection = lazy(() => import('../sections/MidnightConfessionSection'))
+const LockedDesireSection = lazy(() => import('../sections/LockedDesireSection'))
+const MirrorDareSection = lazy(() => import('../sections/MirrorDareSection'))
 const PetalsSection = lazy(() => import('../sections/PetalsSection'))
 const HeartsSection = lazy(() => import('../sections/HeartsSection'))
 const PolaroidSection = lazy(() => import('../sections/PolaroidSection'))
 const LoveMapSection = lazy(() => import('../sections/LoveMapSection'))
+const SevenDaysSection = lazy(() => import('../sections/SevenDaysSection'))
+const SukoonRevealSection = lazy(() => import('../sections/SukoonRevealSection'))
 const StarsSection = lazy(() => import('../sections/StarsSection'))
 const MusicSection = lazy(() => import('../sections/MusicSection'))
 const MessageSection = lazy(() => import('../sections/MessageSection'))
@@ -25,10 +30,92 @@ function SectionLoader() {
   )
 }
 
+function ClassicJourney() {
+  const content = useWeekContent()
+  return (
+    <>
+      <Suspense fallback={<SectionLoader />}>
+        <LandingSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <PetalsSection />
+      </Suspense>
+      {content.loveMap && content.loveMap.length > 0 && (
+        <Suspense fallback={<SectionLoader />}>
+          <LoveMapSection />
+        </Suspense>
+      )}
+      <Suspense fallback={<SectionLoader />}>
+        <PolaroidSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <HeartsSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <StarsSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <MusicSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <MessageSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <GiftSection />
+      </Suspense>
+    </>
+  )
+}
+
+/** Week 3+ unique flow — feels nothing like the proposal week */
+function StillJourney() {
+  return (
+    <>
+      <Suspense fallback={<SectionLoader />}>
+        <LandingSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <MidnightConfessionSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <LockedDesireSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <MirrorDareSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <SevenDaysSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <LoveMapSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <PolaroidSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <HeartsSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <SukoonRevealSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <StarsSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <MusicSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <GiftSection />
+      </Suspense>
+    </>
+  )
+}
+
 function WeekExperienceInner() {
   const [entered, setEntered] = useState(false)
   const content = useWeekContent()
   const meta = useWeekMeta()
+  const isStill = content.journeyLayout === 'still'
 
   return (
     <>
@@ -51,38 +138,7 @@ function WeekExperienceInner() {
           <HeartCursor />
           <MouseSparkleTrail />
           <MusicPlayer unlocked={entered} playlist={content.musicPlaylist} />
-
-          <main>
-            <Suspense fallback={<SectionLoader />}>
-              <LandingSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <PetalsSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <PolaroidSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <HeartsSection />
-            </Suspense>
-            {content.loveMap && content.loveMap.length > 0 && (
-              <Suspense fallback={<SectionLoader />}>
-                <LoveMapSection />
-              </Suspense>
-            )}
-            <Suspense fallback={<SectionLoader />}>
-              <StarsSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <MusicSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <MessageSection />
-            </Suspense>
-            <Suspense fallback={<SectionLoader />}>
-              <GiftSection />
-            </Suspense>
-          </main>
+          <main>{isStill ? <StillJourney /> : <ClassicJourney />}</main>
         </>
       )}
     </>

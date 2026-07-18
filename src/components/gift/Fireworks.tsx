@@ -58,8 +58,7 @@ export function Fireworks({ active }: { active: boolean }) {
 
     let animationId = 0
     const animate = () => {
-      ctx.fillStyle = 'rgba(10, 6, 8, 0.04)'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       spawnRef.current++
       if (spawnRef.current % 40 === 0) spawnFirework()

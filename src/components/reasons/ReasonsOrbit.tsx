@@ -48,7 +48,9 @@ export function ReasonsOrbit() {
                 </motion.span>
                 <div>
                   <p className="text-[10px] tracking-[0.35em] uppercase text-blush/40 mb-2">
-                    Reason {String(i + 1).padStart(2, '0')}
+                    {reason.toLowerCase().startsWith('i promise')
+                      ? `Promise ${String(i + 1).padStart(2, '0')}`
+                      : `Reason ${String(i + 1).padStart(2, '0')}`}
                   </p>
                   {isOpen ? (
                     <motion.p

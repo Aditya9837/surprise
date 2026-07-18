@@ -7,6 +7,8 @@ interface SectionWrapperProps {
   children: ReactNode
   className?: string
   dark?: boolean
+  /** Keep section opaque even if layout shifts (gift finales) */
+  stayVisible?: boolean
 }
 
 const containerVariants: Variants = {
@@ -27,16 +29,25 @@ const itemVariants: Variants = {
   },
 }
 
-export function SectionWrapper({ id, children, className = '', dark = true }: SectionWrapperProps) {
-  const [ref, inView] = useInView<HTMLElement>({ threshold: 0.15 })
+export function SectionWrapper({
+  id,
+  children,
+  className = '',
+  dark = true,
+  stayVisible = false,
+}: SectionWrapperProps) {
+  const [ref, inView] = useInView<HTMLElement>({
+    threshold: stayVisible ? 0.05 : 0.15,
+    triggerOnce: true,
+  })
 
   return (
     <motion.section
       ref={ref}
       id={id}
       className={`section-full ${dark ? 'bg-[var(--color-ink)]' : ''} ${className}`}
-      initial="hidden"
-      animate={inView ? 'visible' : 'hidden'}
+      initial={stayVisible ? 'visible' : 'hidden'}
+      animate={inView || stayVisible ? 'visible' : 'hidden'}
       variants={containerVariants}
     >
       {children}

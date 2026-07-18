@@ -9,7 +9,8 @@ export default function GiftSection() {
   return (
     <SectionWrapper
       id="gift"
-      className="romantic-veil !overflow-y-auto !overflow-x-hidden !items-start !min-h-[100dvh] py-20 sm:py-24"
+      stayVisible
+      className="romantic-veil relative z-10 !overflow-y-auto !overflow-x-hidden !items-start !min-h-[100dvh] py-20 sm:py-24"
     >
       <GlowingBlobs />
 

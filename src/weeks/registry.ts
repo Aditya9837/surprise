@@ -1,19 +1,15 @@
 /**
  * HOW TO ADD A NEW WEEK (every week forever)
  * ----------------------------------------
- * 1. Create:  src/weeks/week3/content.ts  (copy week2, change the words)
- * 2. Import it in this file
- * 3. Add WeekMeta to WEEK_META (story + highlights for the archive page)
- * 4. Add content to WEEK_CONTENT map:  3: week3Content
- *
- * Home (/) always opens the highest week id automatically.
- * Archive lives at /memories
- * Direct link: /week/1 , /week/2 , /week/3 …
+ * 1. Create:  src/weeks/weekN/content.ts
+ * 2. Import it here + add WEEK_META + WEEK_CONTENT
+ * Home (/) always opens the highest week id.
  */
 
 import type { WeekContent, WeekMeta } from './types'
 import { week1Content } from './week1/content'
 import { week2Content } from './week2/content'
+import { week3Content } from './week3/content'
 
 export const WEEK_META: WeekMeta[] = [
   {
@@ -54,11 +50,31 @@ export const WEEK_META: WeekMeta[] = [
     mood: 'Forever begins',
     accent: '#f2b8c6',
   },
+  {
+    id: 3,
+    slug: 'week-3',
+    weekLabel: 'Week 3',
+    title: 'Still Choosing You',
+    subtitle: 'Seven days later — deeper, quieter, surer',
+    dateLabel: 'July 18, 2026',
+    dateISO: '2026-07-18',
+    story:
+      'One week after I love you — opens dark: midnight confession, locked desire, mirror dare — then soft days, love map, sukoon, sealed letter.',
+    highlights: [
+      'Dark romance trio (confession · hold · mirror)',
+      'Seven Soft Days + Love Map',
+      'Film-strip + sukoon shayari',
+      'Sealed letter finale',
+    ],
+    mood: 'Dark then soft',
+    accent: '#c45c74',
+  },
 ]
 
 const WEEK_CONTENT: Record<number, WeekContent> = {
   1: week1Content,
   2: week2Content,
+  3: week3Content,
 }
 
 export function getLatestWeekId(): number {

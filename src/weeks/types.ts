@@ -1,6 +1,7 @@
-export type GalleryMode = 'photos' | 'polaroids3d'
+export type GalleryMode = 'photos' | 'polaroids3d' | 'filmstrip'
 export type HeartsMode = 'reasons' | 'convergence'
-export type FinaleMode = 'proposal' | 'message'
+export type FinaleMode = 'proposal' | 'message' | 'envelope'
+export type JourneyLayout = 'classic' | 'still'
 
 export interface WeekPhoto {
   id: number
@@ -62,11 +63,44 @@ export interface LoveMapMoment {
   detail: string
 }
 
+export interface SevenDayMoment {
+  day: number
+  title: string
+  note: string
+}
+
 export interface SecretGateConfig {
   /** Accepted answers (compared lowercase, trimmed) */
   passwords: string[]
   hint: string
   placeholder: string
+}
+
+/** Dark romance trio — Week 3+ optional intensity chapter */
+export interface DarkRomanceConfig {
+  midnight: {
+    chapter: string
+    hint: string
+    lines: string[]
+    /** Final slow-burn reveal (usually her name) */
+    finale: string
+  }
+  lockedDesire: {
+    chapter: string
+    title: string
+    holdHint: string
+    reveal: string
+    after: string
+  }
+  mirrorDare: {
+    chapter: string
+    title: string
+    line1: string
+    line2: string
+    /** Photo index into week photos (0-based) */
+    photoIndex: number
+    whisper: string
+  }
 }
 
 /** Full experience content for one week */
@@ -86,8 +120,12 @@ export interface WeekContent {
   galleryMode: GalleryMode
   heartsMode: HeartsMode
   finaleMode: FinaleMode
+  /** classic = week1/2 flow · still = week3 unique flow */
+  journeyLayout?: JourneyLayout
   secretGate?: SecretGateConfig
   loveMap?: LoveMapMoment[]
+  sevenDays?: SevenDayMoment[]
+  darkRomance?: DarkRomanceConfig
 }
 
 /** Archive card / registry metadata */
