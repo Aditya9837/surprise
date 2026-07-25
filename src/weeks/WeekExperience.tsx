@@ -8,9 +8,12 @@ import { WeekChrome } from '../components/layout/WeekChrome'
 import { WeekProvider, useWeekContent, useWeekMeta } from '../context/WeekContext'
 
 const LandingSection = lazy(() => import('../sections/LandingSection'))
+const FlourishLandingSection = lazy(() => import('../sections/FlourishLandingSection'))
 const MidnightConfessionSection = lazy(() => import('../sections/MidnightConfessionSection'))
 const LockedDesireSection = lazy(() => import('../sections/LockedDesireSection'))
 const MirrorDareSection = lazy(() => import('../sections/MirrorDareSection'))
+const BloomGardenSection = lazy(() => import('../sections/BloomGardenSection'))
+const BouquetSection = lazy(() => import('../sections/BouquetSection'))
 const PetalsSection = lazy(() => import('../sections/PetalsSection'))
 const HeartsSection = lazy(() => import('../sections/HeartsSection'))
 const PolaroidSection = lazy(() => import('../sections/PolaroidSection'))
@@ -111,11 +114,40 @@ function StillJourney() {
   )
 }
 
+/** Week 4 — full flourish garden journey */
+function FlourishJourney() {
+  return (
+    <>
+      <Suspense fallback={<SectionLoader />}>
+        <FlourishLandingSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <BloomGardenSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <BouquetSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <PolaroidSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <MusicSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <MessageSection />
+      </Suspense>
+      <Suspense fallback={<SectionLoader />}>
+        <GiftSection />
+      </Suspense>
+    </>
+  )
+}
+
 function WeekExperienceInner() {
   const [entered, setEntered] = useState(false)
   const content = useWeekContent()
   const meta = useWeekMeta()
-  const isStill = content.journeyLayout === 'still'
+  const layout = content.journeyLayout ?? 'classic'
 
   return (
     <>
@@ -138,7 +170,15 @@ function WeekExperienceInner() {
           <HeartCursor />
           <MouseSparkleTrail />
           <MusicPlayer unlocked={entered} playlist={content.musicPlaylist} />
-          <main>{isStill ? <StillJourney /> : <ClassicJourney />}</main>
+          <main>
+            {layout === 'flourish' ? (
+              <FlourishJourney />
+            ) : layout === 'still' ? (
+              <StillJourney />
+            ) : (
+              <ClassicJourney />
+            )}
+          </main>
         </>
       )}
     </>

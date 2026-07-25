@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import { ConfettiBurst } from './ConfettiBurst'
 import { Fireworks } from './Fireworks'
 import { FloatingHearts } from './FloatingHearts'
+import { BloomBurst } from '../effects/BloomBurst'
+import { PetalStorm } from '../effects/PetalStorm'
 import { useWeekContent, useWeekMeta } from '../../context/WeekContext'
 import { GlassCard } from '../ui/GlassCard'
 import { downloadMemoryCard } from '../../utils/memoryCard'
@@ -20,7 +22,166 @@ export function GiftBox() {
     return <EnvelopeFinale />
   }
 
+  if (content.finaleMode === 'bloom') {
+    return <BloomFinale />
+  }
+
   return <MessageFinale />
+}
+
+function BloomFinale() {
+  const { cta, finalMessage, herName } = useWeekContent()
+  const meta = useWeekMeta()
+  const [opened, setOpened] = useState(false)
+  const [showFX, setShowFX] = useState(false)
+
+  useEffect(() => {
+    if (!opened) return
+    setShowFX(true)
+    const t = window.setTimeout(() => setShowFX(false), 3500)
+    return () => clearTimeout(t)
+  }, [opened])
+
+  return (
+    <div className="relative flex flex-col items-center w-full px-4" style={{ zIndex: 30 }}>
+      {opened && (
+        <div className="fixed inset-0 pointer-events-none z-[4]" aria-hidden>
+          <PetalStorm density={1.3} />
+        </div>
+      )}
+      <BloomBurst active={showFX} />
+      <FloatingHearts active={showFX} />
+
+      <AnimatePresence mode="wait">
+        {!opened ? (
+          <motion.button
+            key="bud"
+            type="button"
+            onClick={() => setOpened(true)}
+            className="relative group"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 1.2 }}
+            whileHover={{ y: -8, scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            aria-label="Open the bloom"
+          >
+            <motion.div
+              className="absolute -inset-12 rounded-full blur-3xl"
+              style={{ background: 'rgba(242,184,198,0.35)' }}
+              animate={{ opacity: [0.4, 0.85, 0.4], scale: [1, 1.15, 1] }}
+              transition={{ duration: 2.6, repeat: Infinity }}
+            />
+            <svg viewBox="0 0 120 140" className="w-44 h-52 sm:w-52 sm:h-60 relative">
+              <path d="M60 70 Q55 100 58 130" stroke="#3d5c45" strokeWidth="3" fill="none" />
+              <ellipse cx="48" cy="100" rx="12" ry="5" fill="#4a6b52" opacity="0.7" transform="rotate(-35 48 100)" />
+              <ellipse cx="74" cy="110" rx="11" ry="4.5" fill="#4a6b52" opacity="0.65" transform="rotate(30 74 110)" />
+              {Array.from({ length: 6 }).map((_, i) => {
+                const a = (i / 6) * Math.PI * 2 - Math.PI / 2
+                const px = 60 + Math.cos(a) * 8
+                const py = 52 + Math.sin(a) * 8
+                return (
+                  <motion.ellipse
+                    key={i}
+                    cx={px}
+                    cy={py}
+                    rx="14"
+                    ry="20"
+                    fill="url(#budGrad)"
+                    transform={`rotate(${(a * 180) / Math.PI + 90} ${px} ${py})`}
+                    animate={{ opacity: [0.75, 1, 0.75] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.12 }}
+                  />
+                )
+              })}
+              <circle cx="60" cy="52" r="8" fill="#fff5f7" />
+              <defs>
+                <radialGradient id="budGrad" cx="40%" cy="30%" r="70%">
+                  <stop offset="0%" stopColor="#fff5f7" />
+                  <stop offset="50%" stopColor="#f2b8c6" />
+                  <stop offset="100%" stopColor="#c45c74" />
+                </radialGradient>
+              </defs>
+            </svg>
+            <motion.p
+              className="mt-6 text-sm tracking-[0.3em] uppercase text-pearl/50 group-hover:text-blush transition-colors"
+              animate={{ y: [0, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              {cta.gift}
+            </motion.p>
+            <p className="mt-2 text-[10px] tracking-[0.2em] uppercase text-pearl/25">
+              Watch it open for you
+            </p>
+          </motion.button>
+        ) : (
+          <motion.div
+            key="letter"
+            initial={{ opacity: 0, y: 40, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-xl w-full relative z-10"
+          >
+            <div
+              className="rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden"
+              style={{
+                background:
+                  'linear-gradient(165deg, rgba(255,245,240,0.1), rgba(242,184,198,0.08))',
+                border: '1px solid rgba(242,184,198,0.25)',
+                boxShadow: '0 25px 60px rgba(0,0,0,0.45), 0 0 80px rgba(242,184,198,0.15)',
+              }}
+            >
+              <p className="text-[10px] tracking-[0.35em] uppercase text-blush/60 mb-4">
+                {meta.dateLabel}
+              </p>
+              <h2 className="font-[family-name:var(--font-script)] text-4xl sm:text-5xl text-gradient mb-3">
+                {finalMessage.title}
+              </h2>
+              <p className="font-[family-name:var(--font-display)] text-base sm:text-lg text-pearl/55 italic mb-8">
+                {finalMessage.subtitle}
+              </p>
+              <div className="space-y-3 mb-10">
+                {finalMessage.lines.map((line, i) => (
+                  <motion.p
+                    key={i}
+                    className="font-[family-name:var(--font-handwritten)] text-xl sm:text-2xl text-blush/90"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 + i * 0.2 }}
+                  >
+                    {line}
+                  </motion.p>
+                ))}
+              </div>
+              <motion.button
+                type="button"
+                onClick={() =>
+                  downloadMemoryCard({
+                    herName,
+                    dateLabel: meta.dateLabel || 'Forever',
+                    title: finalMessage.title,
+                    subtitle: finalMessage.subtitle,
+                  })
+                }
+                className="inline-flex items-center justify-center min-h-12 px-8 py-3 rounded-full text-[11px] tracking-[0.22em] uppercase text-ink font-medium"
+                style={{
+                  background: 'linear-gradient(135deg, #f7e8e0, #f2b8c6 45%, #e8d5a8)',
+                  boxShadow: '0 0 40px rgba(242,184,198,0.45)',
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1 }}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Save this day ↓
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
 }
 
 function EnvelopeFinale() {

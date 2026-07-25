@@ -10,6 +10,7 @@ import type { WeekContent, WeekMeta } from './types'
 import { week1Content } from './week1/content'
 import { week2Content } from './week2/content'
 import { week3Content } from './week3/content'
+import { week4Content } from './week4/content'
 
 export const WEEK_META: WeekMeta[] = [
   {
@@ -69,12 +70,32 @@ export const WEEK_META: WeekMeta[] = [
     mood: 'Dark then soft',
     accent: '#c45c74',
   },
+  {
+    id: 4,
+    slug: 'week-4',
+    weekLabel: 'Week 4',
+    title: 'In Full Bloom',
+    subtitle: 'Two weeks later — a whole garden for her',
+    dateLabel: 'July 25, 2026',
+    dateISO: '2026-07-25',
+    story:
+      'Week 4 opens as a living garden — petal storms, tap-to-bloom flowers, a bouquet of truths, and a finale that blossoms just for Mansi.',
+    highlights: [
+      'Petal storm + living bloom garden',
+      'Tap anywhere to plant flowers',
+      'Build her a digital bouquet',
+      'Bloom finale — open the flower',
+    ],
+    mood: 'Full flourish',
+    accent: '#f2b8c6',
+  },
 ]
 
 const WEEK_CONTENT: Record<number, WeekContent> = {
   1: week1Content,
   2: week2Content,
   3: week3Content,
+  4: week4Content,
 }
 
 export function getLatestWeekId(): number {

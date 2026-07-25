@@ -1,7 +1,7 @@
 export type GalleryMode = 'photos' | 'polaroids3d' | 'filmstrip'
 export type HeartsMode = 'reasons' | 'convergence'
-export type FinaleMode = 'proposal' | 'message' | 'envelope'
-export type JourneyLayout = 'classic' | 'still'
+export type FinaleMode = 'proposal' | 'message' | 'envelope' | 'bloom'
+export type JourneyLayout = 'classic' | 'still' | 'flourish'
 
 export interface WeekPhoto {
   id: number
