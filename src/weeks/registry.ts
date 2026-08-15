@@ -11,6 +11,7 @@ import { week1Content } from './week1/content'
 import { week2Content } from './week2/content'
 import { week3Content } from './week3/content'
 import { week4Content } from './week4/content'
+import { week5Content } from './week5/content'
 
 export const WEEK_META: WeekMeta[] = [
   {
@@ -89,6 +90,25 @@ export const WEEK_META: WeekMeta[] = [
     mood: 'Full flourish',
     accent: '#f2b8c6',
   },
+  {
+    id: 5,
+    slug: 'week-5',
+    weekLabel: 'Week 5',
+    title: 'Come Closer',
+    subtitle: 'After the silence — hunger, heat, return',
+    dateLabel: 'August 15, 2026',
+    dateISO: '2026-08-15',
+    story:
+      'Busy weeks went quiet. This one comes back slow and hungry — midnight confession, hold-to-unlock desire, after-dark gallery, and a letter meant to be read alone.',
+    highlights: [
+      'After-midnight confession (lock the door)',
+      'Hold-to-unlock heat',
+      'Cinematic after-dark gallery',
+      'A letter written for her pulse',
+    ],
+    mood: 'Hungry return',
+    accent: '#c45c74',
+  },
 ]
 
 const WEEK_CONTENT: Record<number, WeekContent> = {
@@ -96,6 +116,7 @@ const WEEK_CONTENT: Record<number, WeekContent> = {
   2: week2Content,
   3: week3Content,
   4: week4Content,
+  5: week5Content,
 }
 
 export function getLatestWeekId(): number {
